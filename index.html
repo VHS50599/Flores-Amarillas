@@ -12,28 +12,33 @@
         transition: background-color 3s ease;
     }
 
-    .flor {
+    .item {
         position: fixed;
-        top: -50px;
         width: 40px;
         height: 40px;
         pointer-events: none;
+    }
+
+    .daisy {
         background-image: url("daisy.png");
         background-size: cover;
         background-position: center;
-        border-radius: 50%;
+    }
+
+    .heart {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+    }
+
+    .down {
+        top: -50px;
         animation: caer linear forwards;
     }
 
-    .subiendo {
-        position: fixed;
+    .up {
         bottom: -50px;
-        width: 40px;
-        height: 40px;
-        pointer-events: none;
-        background-image: url("yellow-rose.png");
-        background-size: cover;
-        background-position: center;
         animation: subir linear forwards;
     }
 
@@ -54,34 +59,51 @@
 <body>
 
 <script>
-let flores = [];
+let items = [];
 let velocidadGeneracion = 100;
 let fondoCambiado = false;
 let faseReducir = false;
 
 let lluviaInversaActiva = false;
 
-function crearFlor() {
+// 🎯 función de distribución compartida
+function aplicarContenido(el) {
+    const tipo = Math.random();
 
-    if (faseReducir && flores.length >= 80) {
-        setTimeout(crearFlor, 100);
+    if (tipo < 0.5) {
+        el.classList.add("daisy");
+    } else if (tipo < 0.75) {
+        el.classList.add("heart");
+        el.innerText = "🤍";
+    } else {
+        el.classList.add("heart");
+        el.innerText = "💛";
+    }
+}
+
+function crearItemDown() {
+
+    if (faseReducir && items.length >= 80) {
+        setTimeout(crearItemDown, 100);
         return;
     }
 
-    const flor = document.createElement("div");
-    flor.classList.add("flor");
+    const el = document.createElement("div");
+    el.classList.add("item", "down");
 
-    flor.style.left = Math.random() * window.innerWidth + "px";
+    el.style.left = Math.random() * window.innerWidth + "px";
+
+    aplicarContenido(el);
 
     const duracion = 3 + Math.random() * 2;
-    flor.style.animationDuration = duracion + "s";
+    el.style.animationDuration = duracion + "s";
 
-    document.body.appendChild(flor);
-    flores.push(flor);
+    document.body.appendChild(el);
+    items.push(el);
 
     setTimeout(() => {
-        flor.remove();
-        flores = flores.filter(f => f !== flor);
+        el.remove();
+        items = items.filter(f => f !== el);
     }, duracion * 1000);
 
     if (!fondoCambiado) {
@@ -90,28 +112,29 @@ function crearFlor() {
         }
     }
 
-    if (flores.length > 140 && !fondoCambiado) {
+    if (items.length > 140 && !fondoCambiado) {
         document.body.style.backgroundColor = "#D4A017";
         fondoCambiado = true;
 
         setTimeout(() => {
             faseReducir = true;
-
             lluviaInversaActiva = true;
             iniciarLluviaInversa();
-
         }, 2000);
     }
 
-    setTimeout(crearFlor, velocidadGeneracion);
+    setTimeout(crearItemDown, velocidadGeneracion);
 }
 
-// 🌹 lluvia inversa (sube)
-function crearElementoInverso() {
+// 🌟 lluvia inversa (UP)
+function crearItemUp() {
+
     const el = document.createElement("div");
-    el.classList.add("subiendo");
+    el.classList.add("item", "up");
 
     el.style.left = Math.random() * window.innerWidth + "px";
+
+    aplicarContenido(el);
 
     const duracion = 3 + Math.random() * 2;
     el.style.animationDuration = duracion + "s";
@@ -126,12 +149,11 @@ function crearElementoInverso() {
 function iniciarLluviaInversa() {
     if (!lluviaInversaActiva) return;
 
-    crearElementoInverso();
-
+    crearItemUp();
     setTimeout(iniciarLluviaInversa, 80);
 }
 
-crearFlor();
+crearItemDown();
 </script>
 
 </body>
