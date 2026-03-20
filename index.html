@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Lluvia de flores</title>
+
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        background-color: black;
+        transition: background-color 3s ease;
+    }
+
+    .flor {
+        position: fixed;
+        top: -50px;
+        width: 40px;
+        height: 40px;
+        pointer-events: none;
+        background-image: url("C:\Users\Owner\Downloads\daisy.png");
+        background-size: cover;
+        background-position: center;
+        border-radius: 50%;
+        animation: caer linear forwards;
+    }
+
+    .subiendo {
+        position: fixed;
+        bottom: -50px;
+        width: 40px;
+        height: 40px;
+        pointer-events: none;
+        background-image: url("C:\Users\Owner\Downloads\Yellow Rose.png");
+        background-size: cover;
+        background-position: center;
+        animation: subir linear forwards;
+    }
+
+    @keyframes caer {
+        to {
+            transform: translateY(110vh);
+        }
+    }
+
+    @keyframes subir {
+        to {
+            transform: translateY(-110vh);
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<script>
+let flores = [];
+let velocidadGeneracion = 100;
+let fondoCambiado = false;
+let faseReducir = false;
+
+let lluviaInversaActiva = false;
+
+function crearFlor() {
+
+    // control de reducción
+    if (faseReducir && flores.length >= 80) {
+        setTimeout(crearFlor, 100);
+        return;
+    }
+
+    const flor = document.createElement("div");
+    flor.classList.add("flor");
+
+    flor.style.left = Math.random() * window.innerWidth + "px";
+
+    const duracion = 3 + Math.random() * 2;
+    flor.style.animationDuration = duracion + "s";
+
+    document.body.appendChild(flor);
+    flores.push(flor);
+
+    setTimeout(() => {
+        flor.remove();
+        flores = flores.filter(f => f !== flor);
+    }, duracion * 1000);
+
+    // acelerar
+    if (!fondoCambiado) {
+        if (velocidadGeneracion > 15) {
+            velocidadGeneracion -= 2;
+        }
+    }
+
+    // cambio de fondo
+    if (flores.length > 140 && !fondoCambiado) {
+        document.body.style.backgroundColor = "#D4A017";
+        fondoCambiado = true;
+
+        setTimeout(() => {
+            faseReducir = true;
+
+            lluviaInversaActiva = true;
+            iniciarLluviaInversa();
+
+        }, 2000);
+    }
+
+    setTimeout(crearFlor, velocidadGeneracion);
+}
+
+// 🌹 lluvia inversa (sube)
+function crearElementoInverso() {
+    const el = document.createElement("div");
+    el.classList.add("subiendo");
+
+    el.style.left = Math.random() * window.innerWidth + "px";
+
+    const duracion = 3 + Math.random() * 2;
+    el.style.animationDuration = duracion + "s";
+
+    document.body.appendChild(el);
+
+    setTimeout(() => {
+        el.remove();
+    }, duracion * 1000);
+}
+
+// iniciar lluvia inversa
+function iniciarLluviaInversa() {
+    if (!lluviaInversaActiva) return;
+
+    crearElementoInverso();
+
+    setTimeout(iniciarLluviaInversa, 80);
+}
+
+// iniciar
+crearFlor();
+</script>
+
+</body>
+</html>
