@@ -14,9 +14,12 @@
 
     .item {
         position: fixed;
-        width: 40px;
-        height: 40px;
+        width: 80px;
+        height: 80px;
         pointer-events: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .daisy {
@@ -26,10 +29,7 @@
     }
 
     .heart {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 26px;
+        font-size: 52px;
     }
 
     .down {
@@ -53,22 +53,99 @@
             transform: translateY(-110vh);
         }
     }
+
+    @media (max-width: 768px) {
+        .item {
+            width: 100px;
+            height: 100px;
+        }
+
+        .heart {
+            font-size: 65px;
+        }
+    }
+
+    /* 💌 CARTA (FADE IN) */
+    .carta {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.9);
+        width: 80%;
+        max-width: 600px;
+        height: 70%;
+        background-image: url("textured paper.png");
+        background-size: cover;
+        background-position: center;
+        padding: 30px;
+        box-sizing: border-box;
+        overflow-y: auto;
+        border-radius: 10px;
+        box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        z-index: 999;
+
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 1s ease, transform 1s ease;
+    }
+
+    .carta.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    .carta p {
+        font-family: serif;
+        font-size: 18px;
+        line-height: 1.6;
+        color: #2b2b2b;
+    }
 </style>
 </head>
 
 <body>
+
+<div id="carta" class="carta">
+    <p>
+        Mi vida,<br><br>
+
+        Hoy es 21 de marzo, día de las flores amarillas. Este día representa la llegada de la primavera, la alegría, la energía y los nuevos comienzos.<br><br>
+
+        Tú eres mi felicidad y mi razón de ser. Desde el día que te conocí, el 29 de octubre de 2025, hasta hoy 21 de marzo de 2026, han pasado exactamente <b>143 días</b>.<br><br>
+
+        Ya casi llegamos a medio año conociéndonos, y esta ha sido la mejor experiencia de mi vida.<br><br>
+
+        Estar a tu lado, reír, llorar y sentir todo lo que he sentido por ti ha sido parte de la mejor etapa de mi vida.<br><br>
+
+        Sé que no soy el mejor, pero aun así, soy feliz de saber que cada día me eliges.<br><br>
+
+        Perdón por mis errores, siempre intento demostrar mi amor con acciones.<br><br>
+
+        Gracias por estar en mi vida.<br><br>
+
+        Te amo.<br><br>
+
+        — Tu esposito
+    </p>
+</div>
 
 <script>
 let items = [];
 let velocidadGeneracion = 100;
 let fondoCambiado = false;
 let faseReducir = false;
-
 let lluviaInversaActiva = false;
 
-// 🎯 función de distribución compartida
+const isMobile = window.innerWidth < 768;
+const carta = document.getElementById("carta");
+let cartaPermitida = false; // 🔥 control correcto
+
+// 🎯 contenido
 function aplicarContenido(el) {
     const tipo = Math.random();
+
+    el.classList.remove("daisy", "heart");
 
     if (tipo < 0.5) {
         el.classList.add("daisy");
@@ -93,6 +170,13 @@ function crearItemDown() {
 
     el.style.left = Math.random() * window.innerWidth + "px";
 
+    const base = isMobile ? 80 : 60;
+    const size = base + Math.random() * 40;
+
+    el.style.width = size + "px";
+    el.style.height = size + "px";
+    el.style.fontSize = size * 0.65 + "px";
+
     aplicarContenido(el);
 
     const duracion = 3 + Math.random() * 2;
@@ -115,6 +199,7 @@ function crearItemDown() {
     if (items.length > 140 && !fondoCambiado) {
         document.body.style.backgroundColor = "#D4A017";
         fondoCambiado = true;
+        cartaPermitida = true; // 🔥 activar click
 
         setTimeout(() => {
             faseReducir = true;
@@ -123,16 +208,26 @@ function crearItemDown() {
         }, 2000);
     }
 
-    setTimeout(crearItemDown, velocidadGeneracion);
+    setTimeout(
+        crearItemDown,
+        isMobile ? velocidadGeneracion * 1.2 : velocidadGeneracion
+    );
 }
 
-// 🌟 lluvia inversa (UP)
+// 🌟 lluvia inversa
 function crearItemUp() {
 
     const el = document.createElement("div");
     el.classList.add("item", "up");
 
     el.style.left = Math.random() * window.innerWidth + "px";
+
+    const base = isMobile ? 80 : 60;
+    const size = base + Math.random() * 40;
+
+    el.style.width = size + "px";
+    el.style.height = size + "px";
+    el.style.fontSize = size * 0.65 + "px";
 
     aplicarContenido(el);
 
@@ -150,8 +245,15 @@ function iniciarLluviaInversa() {
     if (!lluviaInversaActiva) return;
 
     crearItemUp();
-    setTimeout(iniciarLluviaInversa, 80);
+    setTimeout(iniciarLluviaInversa, isMobile ? 110 : 80);
 }
+
+// 🖱️ CLICK (FIXED)
+document.body.addEventListener("click", () => {
+    if (cartaPermitida) {
+        carta.classList.add("show");
+    }
+});
 
 crearItemDown();
 </script>
