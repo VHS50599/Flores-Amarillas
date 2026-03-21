@@ -97,6 +97,21 @@
         color: #2b2b2b;
         white-space: pre-line;
     }
+
+    /* 📱 MOBILE: carta más corta + texto más grande */
+    @media (max-width: 768px) {
+
+        .carta {
+            width: 90%;
+            height: 55%; /* 🔥 menos altura = texto más cómodo */
+            padding: 35px;
+        }
+
+        .carta p {
+            font-size: 22px; /* 🔥 más grande */
+            line-height: 1.8;
+        }
+    }
 </style>
 </head>
 
