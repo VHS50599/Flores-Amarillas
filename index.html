@@ -43,15 +43,11 @@
     }
 
     @keyframes caer {
-        to {
-            transform: translateY(110vh);
-        }
+        to { transform: translateY(110vh); }
     }
 
     @keyframes subir {
-        to {
-            transform: translateY(-110vh);
-        }
+        to { transform: translateY(-110vh); }
     }
 
     @media (max-width: 768px) {
@@ -65,23 +61,22 @@
         }
     }
 
-    /* 💌 CARTA (FADE IN) */
+    /* 💌 CARTA */
     .carta {
         position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%) scale(0.9);
-        width: 80%;
-        max-width: 600px;
-        height: 70%;
+        width: 85%;
+        max-width: 650px;
+        height: 75%;
         background-image: url("textured paper.png");
         background-size: cover;
-        background-position: center;
         padding: 30px;
         box-sizing: border-box;
         overflow-y: auto;
-        border-radius: 10px;
-        box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        border-radius: 12px;
+        box-shadow: 0 0 40px rgba(0,0,0,0.6);
         z-index: 999;
 
         opacity: 0;
@@ -98,8 +93,9 @@
     .carta p {
         font-family: serif;
         font-size: 18px;
-        line-height: 1.6;
+        line-height: 1.7;
         color: #2b2b2b;
+        white-space: pre-line;
     }
 </style>
 </head>
@@ -107,44 +103,46 @@
 <body>
 
 <div id="carta" class="carta">
-    <p>
-        Mi vida,<br><br>
+<p>
+Mi vida,
 
-        Hoy es 21 de marzo, día de las flores amarillas. Este día representa la llegada de la primavera, la alegría, la energía y los nuevos comienzos.<br><br>
+Hoy es 21 de marzo, día de las flores amarillas. El día de las flores amarillas se celebra por la llegada de la primavera y representa alegría, energía y nuevos comienzos.
 
-        Tú eres mi felicidad y mi razón de ser. Desde el día que te conocí, el 29 de octubre de 2025, hasta hoy 21 de marzo de 2026, han pasado exactamente <b>143 días</b>.<br><br>
+Tú eres mi felicidad y mi razón de ser. Desde el día que te conocí hasta hoy (la conocí el 29 de octubre de 2025 y hoy es 21 de marzo de 2026), han pasado exactamente 143 días en los que mi felicidad se escribe Sara.
 
-        Ya casi llegamos a medio año conociéndonos, y esta ha sido la mejor experiencia de mi vida.<br><br>
+Ya casi llegamos a medio año conociéndonos, y déjame decirte que esta ha sido la mejor experiencia de mi vida. Estar a tu lado, reírme, llorar, enojarme y todos los sentimientos que he sentido por ti han sido parte de la mejor etapa de mi vida.
 
-        Estar a tu lado, reír, llorar y sentir todo lo que he sentido por ti ha sido parte de la mejor etapa de mi vida.<br><br>
+Sé que no soy el mejor, sé que has estado con gente mejor que yo, y sé que siempre siempre será así. Por más que yo desee ser la única persona en tu vida, ser el mejor hombre para ti y simplemente ser mejor que todos, no puedo hacerlo; es irrealista.
 
-        Sé que no soy el mejor, pero aun así, soy feliz de saber que cada día me eliges.<br><br>
+Pero aun así, por más celos que me den saber que tuviste a personas mejor que yo y que en el presente y en el futuro también habrá personas mejor que yo, soy feliz de saber que todas las mañanas tú te levantas y me eliges. Todos los días me eliges y todos los días seré tuyo.
 
-        Perdón por mis errores, siempre intento demostrar mi amor con acciones.<br><br>
+Perdón si te he tratado mal, sobre todo al inicio. Jamás quise herir a una persona tan buena como tú, y me arrepiento mucho. Pero disculparme tantas veces pierde el significado, por eso es que me he esforzado para demostrarte mi arrepentimiento y mi amor con acciones, que valen más que las palabras, pero aun así te digo todos los días cuánto te amo.
 
-        Gracias por estar en mi vida.<br><br>
+Amor, por si no ha quedado claro, mis intenciones contigo son solamente tratarte bien y vivir mi vida a tu lado, porque jamás he sido tan feliz con una persona, y me encanta que la persona que me da tanta felicidad eres tú.
 
-        Te amo.<br><br>
+Mi vida, algo de lo que me arrepiento mucho es de hacerte sentir que tú no me demuestras amor, porque sí lo haces, y mucho. Cada quien tiene su manera de amar, siento que yo soy una persona empalagosa y muy apegada, y que tú seas un poco más distante no tiene nada de malo.
 
-        — Tu esposito
-    </p>
+Perdón si te hice pensar que tienes que cambiar tu forma de ser, pero lo que te digo es verdad amor. Puede ser que cada quien tenga su propia manera de amar y de demostrar cariño, pero hay ciertas cosas que no son justas viendo todo lo que yo he hecho.
+
+Muchísimas gracias por estar en mi vida y ser la niña de mis ojos. Jamás te podré demostrar lo muy agradecido que estoy de que hayas llegado a mi vida, mi monita hermosa.
+
+Te mando muchísimos besos, mi princesa bella. Te amo.
+
+Tu esposito
+</p>
 </div>
 
 <script>
 let items = [];
 let velocidadGeneracion = 100;
 let fondoCambiado = false;
-let faseReducir = false;
-let lluviaInversaActiva = false;
 
-const isMobile = window.innerWidth < 768;
 const carta = document.getElementById("carta");
-let cartaPermitida = false; // 🔥 control correcto
+const isMobile = window.innerWidth < 768;
 
 // 🎯 contenido
 function aplicarContenido(el) {
     const tipo = Math.random();
-
     el.classList.remove("daisy", "heart");
 
     if (tipo < 0.5) {
@@ -158,12 +156,8 @@ function aplicarContenido(el) {
     }
 }
 
+// 🌼 caída
 function crearItemDown() {
-
-    if (faseReducir && items.length >= 80) {
-        setTimeout(crearItemDown, 100);
-        return;
-    }
 
     const el = document.createElement("div");
     el.classList.add("item", "down");
@@ -190,31 +184,10 @@ function crearItemDown() {
         items = items.filter(f => f !== el);
     }, duracion * 1000);
 
-    if (!fondoCambiado) {
-        if (velocidadGeneracion > 15) {
-            velocidadGeneracion -= 2;
-        }
-    }
-
-    if (items.length > 140 && !fondoCambiado) {
-        document.body.style.backgroundColor = "#D4A017";
-        fondoCambiado = true;
-        cartaPermitida = true; // 🔥 activar click
-
-        setTimeout(() => {
-            faseReducir = true;
-            lluviaInversaActiva = true;
-            iniciarLluviaInversa();
-        }, 2000);
-    }
-
-    setTimeout(
-        crearItemDown,
-        isMobile ? velocidadGeneracion * 1.2 : velocidadGeneracion
-    );
+    setTimeout(crearItemDown, velocidadGeneracion);
 }
 
-// 🌟 lluvia inversa
+// 🌟 subida (lluvia inversa)
 function crearItemUp() {
 
     const el = document.createElement("div");
@@ -242,18 +215,24 @@ function crearItemUp() {
 }
 
 function iniciarLluviaInversa() {
-    if (!lluviaInversaActiva) return;
+    if (!fondoCambiado) return;
 
     crearItemUp();
     setTimeout(iniciarLluviaInversa, isMobile ? 110 : 80);
 }
 
-// 🖱️ CLICK (FIXED)
-document.body.addEventListener("click", () => {
-    if (cartaPermitida) {
+// 💛 cambio de fondo + carta
+setTimeout(() => {
+    document.body.style.backgroundColor = "#D4A017";
+    fondoCambiado = true;
+
+    setTimeout(() => {
         carta.classList.add("show");
-    }
-});
+    }, 7000);
+
+    iniciarLluviaInversa();
+
+}, 12000);
 
 crearItemDown();
 </script>
